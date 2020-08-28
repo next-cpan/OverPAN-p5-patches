@@ -1,0 +1,11 @@
+{
+   "distro_version" : "1.3513",
+   "patches" : [
+      "0001.patch",
+      "0002.patch"
+   ],
+   "updated_at" : "2020-08-28 17:42:58",
+   "distro_url" : "https://cpan.metacpan.org/authors/id/B/BI/BIGPRESH/Dancer-1.3513.tar.gz",
+   "distro_name" : "Dancer",
+   "overpan_version" : "0.0001"
+}

@@ -1,0 +1,945 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Nicolas R <nicolas@atoomic.org>
+Date: Fri, 28 Aug 2020 11:42:21 -0600
+Subject: [PATCH] patch lib
+
+---
+ lib/Dancer.pm                              | 6 +++---
+ lib/Dancer/App.pm                          | 2 +-
+ lib/Dancer/Config.pm                       | 2 +-
+ lib/Dancer/Config/Object.pm                | 2 +-
+ lib/Dancer/Continuation.pm                 | 2 +-
+ lib/Dancer/Continuation/Halted.pm          | 2 +-
+ lib/Dancer/Continuation/Route.pm           | 2 +-
+ lib/Dancer/Continuation/Route/ErrorSent.pm | 2 +-
+ lib/Dancer/Continuation/Route/FileSent.pm  | 2 +-
+ lib/Dancer/Continuation/Route/Forwarded.pm | 2 +-
+ lib/Dancer/Continuation/Route/Passed.pm    | 2 +-
+ lib/Dancer/Continuation/Route/Templated.pm | 2 +-
+ lib/Dancer/Cookbook.pod                    | 4 ++--
+ lib/Dancer/Cookie.pm                       | 2 +-
+ lib/Dancer/Cookies.pm                      | 2 +-
+ lib/Dancer/Deprecation.pm                  | 2 +-
+ lib/Dancer/Development.pod                 | 2 +-
+ lib/Dancer/Engine.pm                       | 2 +-
+ lib/Dancer/Error.pm                        | 4 ++--
+ lib/Dancer/Exception.pm                    | 2 +-
+ lib/Dancer/Exception/Base.pm               | 2 +-
+ lib/Dancer/Factory/Hook.pm                 | 2 +-
+ lib/Dancer/FileUtils.pm                    | 2 +-
+ lib/Dancer/GetOpt.pm                       | 2 +-
+ lib/Dancer/HTTP.pm                         | 2 +-
+ lib/Dancer/Handler.pm                      | 2 +-
+ lib/Dancer/Handler/Debug.pm                | 2 +-
+ lib/Dancer/Handler/PSGI.pm                 | 2 +-
+ lib/Dancer/Handler/Standalone.pm           | 2 +-
+ lib/Dancer/Hook.pm                         | 4 ++--
+ lib/Dancer/Hook/Properties.pm              | 2 +-
+ lib/Dancer/Introduction.pod                | 4 ++--
+ lib/Dancer/Logger.pm                       | 2 +-
+ lib/Dancer/Logger/Abstract.pm              | 2 +-
+ lib/Dancer/Logger/Capture.pm               | 2 +-
+ lib/Dancer/Logger/Capture/Trap.pm          | 2 +-
+ lib/Dancer/Logger/Console.pm               | 2 +-
+ lib/Dancer/Logger/Diag.pm                  | 2 +-
+ lib/Dancer/Logger/File.pm                  | 2 +-
+ lib/Dancer/Logger/Note.pm                  | 2 +-
+ lib/Dancer/Logger/Null.pm                  | 2 +-
+ lib/Dancer/MIME.pm                         | 2 +-
+ lib/Dancer/ModuleLoader.pm                 | 2 +-
+ lib/Dancer/Object.pm                       | 4 ++--
+ lib/Dancer/Object/Singleton.pm             | 6 +++---
+ lib/Dancer/Plugin.pm                       | 6 +++---
+ lib/Dancer/Plugin/Ajax.pm                  | 4 ++--
+ lib/Dancer/Renderer.pm                     | 2 +-
+ lib/Dancer/Request.pm                      | 2 +-
+ lib/Dancer/Request/Upload.pm               | 2 +-
+ lib/Dancer/Response.pm                     | 2 +-
+ lib/Dancer/Route.pm                        | 2 +-
+ lib/Dancer/Route/Cache.pm                  | 2 +-
+ lib/Dancer/Route/Registry.pm               | 4 ++--
+ lib/Dancer/Serializer.pm                   | 2 +-
+ lib/Dancer/Serializer/Abstract.pm          | 2 +-
+ lib/Dancer/Serializer/Dumper.pm            | 2 +-
+ lib/Dancer/Serializer/JSON.pm              | 2 +-
+ lib/Dancer/Serializer/JSONP.pm             | 2 +-
+ lib/Dancer/Serializer/Mutable.pm           | 2 +-
+ lib/Dancer/Serializer/XML.pm               | 2 +-
+ lib/Dancer/Serializer/YAML.pm              | 2 +-
+ lib/Dancer/Session.pm                      | 2 +-
+ lib/Dancer/Session/Abstract.pm             | 2 +-
+ lib/Dancer/Session/Simple.pm               | 2 +-
+ lib/Dancer/Session/YAML.pm                 | 2 +-
+ lib/Dancer/SharedData.pm                   | 2 +-
+ lib/Dancer/Template.pm                     | 2 +-
+ lib/Dancer/Template/Abstract.pm            | 2 +-
+ lib/Dancer/Template/Simple.pm              | 2 +-
+ lib/Dancer/Template/TemplateToolkit.pm     | 2 +-
+ lib/Dancer/Test.pm                         | 2 +-
+ lib/Dancer/Timer.pm                        | 2 +-
+ lib/HTTP/Tiny/NoProxy.pm                   | 2 +-
+ 74 files changed, 87 insertions(+), 87 deletions(-)
+
+diff --git a/lib/Dancer.pm b/lib/Dancer.pm
+index 81b7699..3ac42ca 100644
+--- a/lib/Dancer.pm
++++ b/lib/Dancer.pm
+@@ -1,4 +1,4 @@
+-package Dancer;
++use v5; package Dancer;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: lightweight yet powerful web application framework
+ $Dancer::VERSION = '1.3513';
+@@ -958,7 +958,7 @@ Adds a hook at some position. For example :
+ 
+ There can be multiple hooks assigned to a given position, and each will be
+ executed in order. Note that B<all> hooks are always called, even if they
+-are defined in a different package loaded via C<load_app>.
++are defined in a different use v5; package loaded via C<load_app>.
+ 
+ (For details on how to register new hooks from within plugins, see
+ L<Dancer::Hook>.)
+@@ -1192,7 +1192,7 @@ directory:
+     # or with options
+     load_app 'Forum', prefix => '/forum', settings => {foo => 'bar'};
+ 
+-Note that the package loaded using load_app B<must> import Dancer with the
++Note that the use v5; package loaded using load_app B<must> import Dancer with the
+ C<:syntax> option.
+ 
+ To load multiple apps repeat load_app:
+diff --git a/lib/Dancer/App.pm b/lib/Dancer/App.pm
+index 37a4e89..bfefd7f 100644
+--- a/lib/Dancer/App.pm
++++ b/lib/Dancer/App.pm
+@@ -1,4 +1,4 @@
+-package Dancer::App;
++use v5; package Dancer::App;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ # ABSTRACT: Base application class for Dancer.
+ $Dancer::App::VERSION = '1.3513';
+diff --git a/lib/Dancer/Config.pm b/lib/Dancer/Config.pm
+index e44eba3..7dfb822 100644
+--- a/lib/Dancer/Config.pm
++++ b/lib/Dancer/Config.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Config;
++use v5; package Dancer::Config;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT:  how to configure Dancer to suit your needs
+ $Dancer::Config::VERSION = '1.3513';
+diff --git a/lib/Dancer/Config/Object.pm b/lib/Dancer/Config/Object.pm
+index afd7bce..06707c9 100644
+--- a/lib/Dancer/Config/Object.pm
++++ b/lib/Dancer/Config/Object.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Config::Object;
++use v5; package Dancer::Config::Object;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: Access the config via methods instead of hashrefs
+ $Dancer::Config::Object::VERSION = '1.3513';
+diff --git a/lib/Dancer/Continuation.pm b/lib/Dancer/Continuation.pm
+index 0e636dd..e8610d8 100644
+--- a/lib/Dancer/Continuation.pm
++++ b/lib/Dancer/Continuation.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Continuation;
++use v5; package Dancer::Continuation;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ # ABSTRACT: Continuation exception (internal exception) for Dancer
+ $Dancer::Continuation::VERSION = '1.3513';
+diff --git a/lib/Dancer/Continuation/Halted.pm b/lib/Dancer/Continuation/Halted.pm
+index c3b4695..cc3d274 100644
+--- a/lib/Dancer/Continuation/Halted.pm
++++ b/lib/Dancer/Continuation/Halted.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Continuation::Halted;
++use v5; package Dancer::Continuation::Halted;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ # ABSTRACT: Halted internal exception class for Dancer
+ $Dancer::Continuation::Halted::VERSION = '1.3513';
+diff --git a/lib/Dancer/Continuation/Route.pm b/lib/Dancer/Continuation/Route.pm
+index 5a238c8..90851f0 100644
+--- a/lib/Dancer/Continuation/Route.pm
++++ b/lib/Dancer/Continuation/Route.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Continuation::Route;
++use v5; package Dancer::Continuation::Route;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ # ABSTRACT: Internal exception class for Route exceptions in Dancer.
+ $Dancer::Continuation::Route::VERSION = '1.3513';
+diff --git a/lib/Dancer/Continuation/Route/ErrorSent.pm b/lib/Dancer/Continuation/Route/ErrorSent.pm
+index 807b2ef..252234c 100644
+--- a/lib/Dancer/Continuation/Route/ErrorSent.pm
++++ b/lib/Dancer/Continuation/Route/ErrorSent.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Continuation::Route::ErrorSent;
++use v5; package Dancer::Continuation::Route::ErrorSent;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ # ABSTRACT: Internal Dancer exception class
+ $Dancer::Continuation::Route::ErrorSent::VERSION = '1.3513';
+diff --git a/lib/Dancer/Continuation/Route/FileSent.pm b/lib/Dancer/Continuation/Route/FileSent.pm
+index c5c6de5..7b86c9b 100644
+--- a/lib/Dancer/Continuation/Route/FileSent.pm
++++ b/lib/Dancer/Continuation/Route/FileSent.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Continuation::Route::FileSent;
++use v5; package Dancer::Continuation::Route::FileSent;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ # ABSTRACT: Internal Dancer exception class
+ $Dancer::Continuation::Route::FileSent::VERSION = '1.3513';
+diff --git a/lib/Dancer/Continuation/Route/Forwarded.pm b/lib/Dancer/Continuation/Route/Forwarded.pm
+index 95401a5..ae16d66 100644
+--- a/lib/Dancer/Continuation/Route/Forwarded.pm
++++ b/lib/Dancer/Continuation/Route/Forwarded.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Continuation::Route::Forwarded;
++use v5; package Dancer::Continuation::Route::Forwarded;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ # ABSTRACT: Internal Dancer exception class
+ $Dancer::Continuation::Route::Forwarded::VERSION = '1.3513';
+diff --git a/lib/Dancer/Continuation/Route/Passed.pm b/lib/Dancer/Continuation/Route/Passed.pm
+index e9bc3df..2f525a1 100644
+--- a/lib/Dancer/Continuation/Route/Passed.pm
++++ b/lib/Dancer/Continuation/Route/Passed.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Continuation::Route::Passed;
++use v5; package Dancer::Continuation::Route::Passed;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ # ABSTRACT: Internal Dancer exception class
+ $Dancer::Continuation::Route::Passed::VERSION = '1.3513';
+diff --git a/lib/Dancer/Continuation/Route/Templated.pm b/lib/Dancer/Continuation/Route/Templated.pm
+index 4e78c62..80c8c2b 100644
+--- a/lib/Dancer/Continuation/Route/Templated.pm
++++ b/lib/Dancer/Continuation/Route/Templated.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Continuation::Route::Templated;
++use v5; package Dancer::Continuation::Route::Templated;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ # ABSTRACT: Internal Dancer exception class
+ $Dancer::Continuation::Route::Templated::VERSION = '1.3513';
+diff --git a/lib/Dancer/Cookbook.pod b/lib/Dancer/Cookbook.pod
+index 4310125..6e15457 100644
+--- a/lib/Dancer/Cookbook.pod
++++ b/lib/Dancer/Cookbook.pod
+@@ -267,7 +267,7 @@ For better maintainability you may want to separate some of your application
+ components to different packages. Let's say we have a simple web app with an
+ admin section, and want to maintain this in a different package:
+ 
+-    package myapp;
++    use v5; package myapp;
+     use Dancer ':syntax';
+     use myapp::admin;
+ 
+@@ -277,7 +277,7 @@ admin section, and want to maintain this in a different package:
+ 
+     1;
+ 
+-    package myapp::admin;
++    use v5; package myapp::admin;
+     use Dancer ':syntax';
+ 
+     prefix '/admin';
+diff --git a/lib/Dancer/Cookie.pm b/lib/Dancer/Cookie.pm
+index 5f86664..2c71b47 100644
+--- a/lib/Dancer/Cookie.pm
++++ b/lib/Dancer/Cookie.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Cookie;
++use v5; package Dancer::Cookie;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: class representing cookies
+ $Dancer::Cookie::VERSION = '1.3513';
+diff --git a/lib/Dancer/Cookies.pm b/lib/Dancer/Cookies.pm
+index 4a55659..f4fd83d 100644
+--- a/lib/Dancer/Cookies.pm
++++ b/lib/Dancer/Cookies.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Cookies;
++use v5; package Dancer::Cookies;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: a singleton storage for all cookies
+ $Dancer::Cookies::VERSION = '1.3513';
+diff --git a/lib/Dancer/Deprecation.pm b/lib/Dancer/Deprecation.pm
+index 9b70ae9..cc8eb50 100644
+--- a/lib/Dancer/Deprecation.pm
++++ b/lib/Dancer/Deprecation.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Deprecation;
++use v5; package Dancer::Deprecation;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: handle deprecation messages
+ $Dancer::Deprecation::VERSION = '1.3513';
+diff --git a/lib/Dancer/Development.pod b/lib/Dancer/Development.pod
+index 3db1256..cc00b81 100644
+--- a/lib/Dancer/Development.pod
++++ b/lib/Dancer/Development.pod
+@@ -395,7 +395,7 @@ If a patch provides a new feature that depends on a module, the solution is to
+ perform a dynamic loading. Dancer has a class dedicated to that job:
+ L<Dancer::ModuleLoader>. Here is an example of how to use it:
+ 
+-    package Dancer::Some::Thing;
++    use v5; package Dancer::Some::Thing;
+     use Carp;
+ 
+     sub init {
+diff --git a/lib/Dancer/Engine.pm b/lib/Dancer/Engine.pm
+index 74f4ffa..0c43abc 100644
+--- a/lib/Dancer/Engine.pm
++++ b/lib/Dancer/Engine.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Engine;
++use v5; package Dancer::Engine;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: base class for Dancer engines
+ $Dancer::Engine::VERSION = '1.3513';
+diff --git a/lib/Dancer/Error.pm b/lib/Dancer/Error.pm
+index f6ba732..cf32d65 100644
+--- a/lib/Dancer/Error.pm
++++ b/lib/Dancer/Error.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Error;
++use v5; package Dancer::Error;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: class for representing fatal errors
+ $Dancer::Error::VERSION = '1.3513';
+@@ -307,7 +307,7 @@ sub get_caller {
+ 
+     my $deepness = 0;
+     while (my ($package, $file, $line) = caller($deepness++)) {
+-        push @stack, "$package in $file l. $line";
++        push @stack, "$use v5; package in $file l. $line";
+     }
+ 
+     return join("\n", reverse(@stack));
+diff --git a/lib/Dancer/Exception.pm b/lib/Dancer/Exception.pm
+index 5326d69..02ccf0f 100644
+--- a/lib/Dancer/Exception.pm
++++ b/lib/Dancer/Exception.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Exception;
++use v5; package Dancer::Exception;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: class for throwing and catching exceptions
+ $Dancer::Exception::VERSION = '1.3513';
+diff --git a/lib/Dancer/Exception/Base.pm b/lib/Dancer/Exception/Base.pm
+index d65e5a7..d4b3096 100644
+--- a/lib/Dancer/Exception/Base.pm
++++ b/lib/Dancer/Exception/Base.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Exception::Base;
++use v5; package Dancer::Exception::Base;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: the base class of all Dancer exceptions
+ $Dancer::Exception::Base::VERSION = '1.3513';
+diff --git a/lib/Dancer/Factory/Hook.pm b/lib/Dancer/Factory/Hook.pm
+index 2af09a1..4709d96 100644
+--- a/lib/Dancer/Factory/Hook.pm
++++ b/lib/Dancer/Factory/Hook.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Factory::Hook;
++use v5; package Dancer::Factory::Hook;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ # ABSTRACT: Singleton class to create Dancer hooks
+ $Dancer::Factory::Hook::VERSION = '1.3513';
+diff --git a/lib/Dancer/FileUtils.pm b/lib/Dancer/FileUtils.pm
+index c09f307..a51487a 100644
+--- a/lib/Dancer/FileUtils.pm
++++ b/lib/Dancer/FileUtils.pm
+@@ -1,4 +1,4 @@
+-package Dancer::FileUtils;
++use v5; package Dancer::FileUtils;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: helper providing file utilities
+ $Dancer::FileUtils::VERSION = '1.3513';
+diff --git a/lib/Dancer/GetOpt.pm b/lib/Dancer/GetOpt.pm
+index 15e0da6..6396d62 100644
+--- a/lib/Dancer/GetOpt.pm
++++ b/lib/Dancer/GetOpt.pm
+@@ -1,4 +1,4 @@
+-package Dancer::GetOpt;
++use v5; package Dancer::GetOpt;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ # ABSTRACT: Process command-line options for Dancer scripts
+ $Dancer::GetOpt::VERSION = '1.3513';
+diff --git a/lib/Dancer/HTTP.pm b/lib/Dancer/HTTP.pm
+index 27a351f..8a8e3be 100644
+--- a/lib/Dancer/HTTP.pm
++++ b/lib/Dancer/HTTP.pm
+@@ -1,4 +1,4 @@
+-package Dancer::HTTP;
++use v5; package Dancer::HTTP;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: helper for rendering HTTP status codes for Dancer
+ $Dancer::HTTP::VERSION = '1.3513';
+diff --git a/lib/Dancer/Handler.pm b/lib/Dancer/Handler.pm
+index a472291..07b5c25 100644
+--- a/lib/Dancer/Handler.pm
++++ b/lib/Dancer/Handler.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Handler;
++use v5; package Dancer::Handler;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ # ABSTRACT: Dancer request handler
+ $Dancer::Handler::VERSION = '1.3513';
+diff --git a/lib/Dancer/Handler/Debug.pm b/lib/Dancer/Handler/Debug.pm
+index 041695e..a929989 100644
+--- a/lib/Dancer/Handler/Debug.pm
++++ b/lib/Dancer/Handler/Debug.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Handler::Debug;
++use v5; package Dancer::Handler::Debug;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: a debug handler for easy tracing
+ $Dancer::Handler::Debug::VERSION = '1.3513';
+diff --git a/lib/Dancer/Handler/PSGI.pm b/lib/Dancer/Handler/PSGI.pm
+index 1010d2c..5e4fa11 100644
+--- a/lib/Dancer/Handler/PSGI.pm
++++ b/lib/Dancer/Handler/PSGI.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Handler::PSGI;
++use v5; package Dancer::Handler::PSGI;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: a PSGI handler for Dancer applications
+ $Dancer::Handler::PSGI::VERSION = '1.3513';
+diff --git a/lib/Dancer/Handler/Standalone.pm b/lib/Dancer/Handler/Standalone.pm
+index c96bbec..685ed32 100644
+--- a/lib/Dancer/Handler/Standalone.pm
++++ b/lib/Dancer/Handler/Standalone.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Handler::Standalone;
++use v5; package Dancer::Handler::Standalone;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ # ABSTRACT: Web server wrapper for Dancer
+ $Dancer::Handler::Standalone::VERSION = '1.3513';
+diff --git a/lib/Dancer/Hook.pm b/lib/Dancer/Hook.pm
+index c9696c2..69da96e 100644
+--- a/lib/Dancer/Hook.pm
++++ b/lib/Dancer/Hook.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Hook;
++use v5; package Dancer::Hook;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: Class to manipulate hooks with Dancer
+ $Dancer::Hook::VERSION = '1.3513';
+@@ -120,7 +120,7 @@ Currently supported properties:
+ 
+ Add a new hook name, so application developers can insert some code at this point.
+ 
+-    package My::Dancer::Plugin;
++    use v5; package My::Dancer::Plugin;
+     Dancer::Hook->instance->register_hooks_name(qw/before_auth after_auth/);
+ 
+ =head2 hook_is_registered
+diff --git a/lib/Dancer/Hook/Properties.pm b/lib/Dancer/Hook/Properties.pm
+index 3f191f3..4a68255 100644
+--- a/lib/Dancer/Hook/Properties.pm
++++ b/lib/Dancer/Hook/Properties.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Hook::Properties;
++use v5; package Dancer::Hook::Properties;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: Properties attached to a hook
+ $Dancer::Hook::Properties::VERSION = '1.3513';
+diff --git a/lib/Dancer/Introduction.pod b/lib/Dancer/Introduction.pod
+index 3806414..d7e93ba 100644
+--- a/lib/Dancer/Introduction.pod
++++ b/lib/Dancer/Introduction.pod
+@@ -1,4 +1,4 @@
+-package Dancer::Introduction
++use v5; package Dancer::Introduction
+ # ABSTRACT: A gentle introduction to Dancer
+ 
+ __END__
+@@ -384,7 +384,7 @@ the config keyword:
+ If you want to use more complex file hierarchies, you can import just the
+ syntax of Dancer.
+ 
+-    package App;
++    use v5; package App;
+ 
+     use Dancer;            # App may contain generic routes
+     use App::User::Routes; # user-related routes
+diff --git a/lib/Dancer/Logger.pm b/lib/Dancer/Logger.pm
+index f4d4ea2..fc43753 100644
+--- a/lib/Dancer/Logger.pm
++++ b/lib/Dancer/Logger.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Logger;
++use v5; package Dancer::Logger;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: common interface for logging in Dancer
+ $Dancer::Logger::VERSION = '1.3513';
+diff --git a/lib/Dancer/Logger/Abstract.pm b/lib/Dancer/Logger/Abstract.pm
+index a0ad25a..88b771c 100644
+--- a/lib/Dancer/Logger/Abstract.pm
++++ b/lib/Dancer/Logger/Abstract.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Logger::Abstract;
++use v5; package Dancer::Logger::Abstract;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: Abstract logging engine for Dancer
+ $Dancer::Logger::Abstract::VERSION = '1.3513';
+diff --git a/lib/Dancer/Logger/Capture.pm b/lib/Dancer/Logger/Capture.pm
+index c69368f..4200222 100644
+--- a/lib/Dancer/Logger/Capture.pm
++++ b/lib/Dancer/Logger/Capture.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Logger::Capture;
++use v5; package Dancer::Logger::Capture;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ # ABSTRACT: Capture dancer logs
+ $Dancer::Logger::Capture::VERSION = '1.3513';
+diff --git a/lib/Dancer/Logger/Capture/Trap.pm b/lib/Dancer/Logger/Capture/Trap.pm
+index d9df0d6..e53f75a 100644
+--- a/lib/Dancer/Logger/Capture/Trap.pm
++++ b/lib/Dancer/Logger/Capture/Trap.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Logger::Capture::Trap;
++use v5; package Dancer::Logger::Capture::Trap;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ $Dancer::Logger::Capture::Trap::VERSION = '1.3513';
+ # ABSTRACT: a place to store captured Dancer logs
+diff --git a/lib/Dancer/Logger/Console.pm b/lib/Dancer/Logger/Console.pm
+index a38471c..91b9b55 100644
+--- a/lib/Dancer/Logger/Console.pm
++++ b/lib/Dancer/Logger/Console.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Logger::Console;
++use v5; package Dancer::Logger::Console;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: console-based logging engine for Dancer
+ $Dancer::Logger::Console::VERSION = '1.3513';
+diff --git a/lib/Dancer/Logger/Diag.pm b/lib/Dancer/Logger/Diag.pm
+index 9b7bc82..134813e 100644
+--- a/lib/Dancer/Logger/Diag.pm
++++ b/lib/Dancer/Logger/Diag.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Logger::Diag;
++use v5; package Dancer::Logger::Diag;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: Test::More diag() logging engine for Dancer
+ $Dancer::Logger::Diag::VERSION = '1.3513';
+diff --git a/lib/Dancer/Logger/File.pm b/lib/Dancer/Logger/File.pm
+index fa8503a..0cf1e62 100644
+--- a/lib/Dancer/Logger/File.pm
++++ b/lib/Dancer/Logger/File.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Logger::File;
++use v5; package Dancer::Logger::File;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: file-based logging engine for Dancer
+ $Dancer::Logger::File::VERSION = '1.3513';
+diff --git a/lib/Dancer/Logger/Note.pm b/lib/Dancer/Logger/Note.pm
+index bf0fbf5..c9b12b1 100644
+--- a/lib/Dancer/Logger/Note.pm
++++ b/lib/Dancer/Logger/Note.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Logger::Note;
++use v5; package Dancer::Logger::Note;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: Test::More note() logging engine for Dancer
+ $Dancer::Logger::Note::VERSION = '1.3513';
+diff --git a/lib/Dancer/Logger/Null.pm b/lib/Dancer/Logger/Null.pm
+index 7701461..f58c373 100644
+--- a/lib/Dancer/Logger/Null.pm
++++ b/lib/Dancer/Logger/Null.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Logger::Null;
++use v5; package Dancer::Logger::Null;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: blackhole-like silent logging engine for Dancer
+ $Dancer::Logger::Null::VERSION = '1.3513';
+diff --git a/lib/Dancer/MIME.pm b/lib/Dancer/MIME.pm
+index ec035e5..5274bee 100644
+--- a/lib/Dancer/MIME.pm
++++ b/lib/Dancer/MIME.pm
+@@ -1,4 +1,4 @@
+-package Dancer::MIME;
++use v5; package Dancer::MIME;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: Singleton object to handle MimeTypes
+ $Dancer::MIME::VERSION = '1.3513';
+diff --git a/lib/Dancer/ModuleLoader.pm b/lib/Dancer/ModuleLoader.pm
+index 67e6ddb..d4aba30 100644
+--- a/lib/Dancer/ModuleLoader.pm
++++ b/lib/Dancer/ModuleLoader.pm
+@@ -1,4 +1,4 @@
+-package Dancer::ModuleLoader;
++use v5; package Dancer::ModuleLoader;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: dynamic module loading helpers for Dancer core components
+ $Dancer::ModuleLoader::VERSION = '1.3513';
+diff --git a/lib/Dancer/Object.pm b/lib/Dancer/Object.pm
+index 1dd826d..dd23bb7 100644
+--- a/lib/Dancer/Object.pm
++++ b/lib/Dancer/Object.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Object;
++use v5; package Dancer::Object;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: Objects base class for Dancer
+ $Dancer::Object::VERSION = '1.3513';
+@@ -116,7 +116,7 @@ version 1.3513
+ 
+ =head1 SYNOPSIS
+ 
+-    package My::Dancer::Extension;
++    use v5; package My::Dancer::Extension;
+ 
+     use strict;
+     use warnings;
+diff --git a/lib/Dancer/Object/Singleton.pm b/lib/Dancer/Object/Singleton.pm
+index 08f2b3f..9db659a 100644
+--- a/lib/Dancer/Object/Singleton.pm
++++ b/lib/Dancer/Object/Singleton.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Object::Singleton;
++use v5; package Dancer::Object::Singleton;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: Singleton base class for Dancer
+ $Dancer::Object::Singleton::VERSION = '1.3513';
+@@ -12,7 +12,7 @@ use Dancer::Exception qw(:all);
+ 
+ use base qw(Dancer::Object);
+ 
+-# pool of instances (only one per package name)
++# pool of instances (only one per use v5; package name)
+ my %instances;
+ 
+ # constructor
+@@ -78,7 +78,7 @@ version 1.3513
+ 
+ =head1 SYNOPSIS
+ 
+-    package My::Dancer::Extension;
++    use v5; package My::Dancer::Extension;
+ 
+     use strict;
+     use warnings;
+diff --git a/lib/Dancer/Plugin.pm b/lib/Dancer/Plugin.pm
+index d7174fd..2f2040c 100644
+--- a/lib/Dancer/Plugin.pm
++++ b/lib/Dancer/Plugin.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Plugin;
++use v5; package Dancer::Plugin;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: helper for writing Dancer plugins
+ $Dancer::Plugin::VERSION = '1.3513';
+@@ -128,7 +128,7 @@ version 1.3513
+ 
+ =head1 SYNOPSIS
+ 
+-  package Dancer::Plugin::LinkBlocker;
++  use v5; package Dancer::Plugin::LinkBlocker;
+   use Dancer ':syntax';
+   use Dancer::Plugin;
+ 
+@@ -147,7 +147,7 @@ version 1.3513
+ 
+ And in your application:
+ 
+-    package My::Webapp;
++    use v5; package My::Webapp;
+     
+     use Dancer ':syntax';
+     use Dancer::Plugin::LinkBlocker;
+diff --git a/lib/Dancer/Plugin/Ajax.pm b/lib/Dancer/Plugin/Ajax.pm
+index a972705..70e5be0 100644
+--- a/lib/Dancer/Plugin/Ajax.pm
++++ b/lib/Dancer/Plugin/Ajax.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Plugin::Ajax;
++use v5; package Dancer::Plugin::Ajax;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: a plugin for adding Ajax route handlers
+ $Dancer::Plugin::Ajax::VERSION = '1.3513';
+@@ -76,7 +76,7 @@ version 1.3513
+ 
+ =head1 SYNOPSIS
+ 
+-    package MyWebApp;
++    use v5; package MyWebApp;
+ 
+     use Dancer;
+     use Dancer::Plugin::Ajax;
+diff --git a/lib/Dancer/Renderer.pm b/lib/Dancer/Renderer.pm
+index 9120209..c125ba3 100644
+--- a/lib/Dancer/Renderer.pm
++++ b/lib/Dancer/Renderer.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Renderer;
++use v5; package Dancer::Renderer;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ # ABSTRACT: Rendering class for Dancer
+ $Dancer::Renderer::VERSION = '1.3513';
+diff --git a/lib/Dancer/Request.pm b/lib/Dancer/Request.pm
+index d893041..2108a68 100644
+--- a/lib/Dancer/Request.pm
++++ b/lib/Dancer/Request.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Request;
++use v5; package Dancer::Request;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: interface for accessing incoming requests
+ $Dancer::Request::VERSION = '1.3513';
+diff --git a/lib/Dancer/Request/Upload.pm b/lib/Dancer/Request/Upload.pm
+index 372400d..2c9c971 100644
+--- a/lib/Dancer/Request/Upload.pm
++++ b/lib/Dancer/Request/Upload.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Request::Upload;
++use v5; package Dancer::Request::Upload;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: class representing file uploads requests
+ $Dancer::Request::Upload::VERSION = '1.3513';
+diff --git a/lib/Dancer/Response.pm b/lib/Dancer/Response.pm
+index 8290854..3b2e907 100644
+--- a/lib/Dancer/Response.pm
++++ b/lib/Dancer/Response.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Response;
++use v5; package Dancer::Response;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: Response object for Dancer
+ $Dancer::Response::VERSION = '1.3513';
+diff --git a/lib/Dancer/Route.pm b/lib/Dancer/Route.pm
+index c944edd..90e4331 100644
+--- a/lib/Dancer/Route.pm
++++ b/lib/Dancer/Route.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Route;
++use v5; package Dancer::Route;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ # ABSTRACT: Class to represent a route in Dancer
+ $Dancer::Route::VERSION = '1.3513';
+diff --git a/lib/Dancer/Route/Cache.pm b/lib/Dancer/Route/Cache.pm
+index c2f13d1..2f2fe86 100644
+--- a/lib/Dancer/Route/Cache.pm
++++ b/lib/Dancer/Route/Cache.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Route::Cache;
++use v5; package Dancer::Route::Cache;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: route caching mechanism for L<Dancer>
+ $Dancer::Route::Cache::VERSION = '1.3513';
+diff --git a/lib/Dancer/Route/Registry.pm b/lib/Dancer/Route/Registry.pm
+index 4df4f7c..06dd2a4 100644
+--- a/lib/Dancer/Route/Registry.pm
++++ b/lib/Dancer/Route/Registry.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Route::Registry;
++use v5; package Dancer::Route::Registry;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ # ABSTRACT: Route registry for Dancer
+ $Dancer::Route::Registry::VERSION = '1.3513';
+@@ -75,7 +75,7 @@ sub register_route {
+     # look if the caller (where the route is declared) exists as a Dancer::App
+     # object
+     my ($package) = caller(2);
+-    if ($package && Dancer::App->app_exists($package)) {
++    if ($use v5; package && Dancer::App->app_exists($package)) {
+         my $app = Dancer::App->get($package);
+         my $route = Dancer::Route->new(prefix => $app->prefix, %args);
+         return $app->registry->add_route($route);
+diff --git a/lib/Dancer/Serializer.pm b/lib/Dancer/Serializer.pm
+index cd72ea1..2608b27 100644
+--- a/lib/Dancer/Serializer.pm
++++ b/lib/Dancer/Serializer.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Serializer;
++use v5; package Dancer::Serializer;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: serializer wrapper for Dancer
+ $Dancer::Serializer::VERSION = '1.3513';
+diff --git a/lib/Dancer/Serializer/Abstract.pm b/lib/Dancer/Serializer/Abstract.pm
+index 5d3a020..297739b 100644
+--- a/lib/Dancer/Serializer/Abstract.pm
++++ b/lib/Dancer/Serializer/Abstract.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Serializer::Abstract;
++use v5; package Dancer::Serializer::Abstract;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ # ABSTRACT: Base serialiser class for Dancer
+ $Dancer::Serializer::Abstract::VERSION = '1.3513';
+diff --git a/lib/Dancer/Serializer/Dumper.pm b/lib/Dancer/Serializer/Dumper.pm
+index b013aff..889824b 100644
+--- a/lib/Dancer/Serializer/Dumper.pm
++++ b/lib/Dancer/Serializer/Dumper.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Serializer::Dumper;
++use v5; package Dancer::Serializer::Dumper;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ # ABSTRACT: Data::Dumper serialisation for Dancer
+ $Dancer::Serializer::Dumper::VERSION = '1.3513';
+diff --git a/lib/Dancer/Serializer/JSON.pm b/lib/Dancer/Serializer/JSON.pm
+index ad23387..71b84af 100644
+--- a/lib/Dancer/Serializer/JSON.pm
++++ b/lib/Dancer/Serializer/JSON.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Serializer::JSON;
++use v5; package Dancer::Serializer::JSON;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: serializer for handling JSON data
+ $Dancer::Serializer::JSON::VERSION = '1.3513';
+diff --git a/lib/Dancer/Serializer/JSONP.pm b/lib/Dancer/Serializer/JSONP.pm
+index 805557e..361918f 100644
+--- a/lib/Dancer/Serializer/JSONP.pm
++++ b/lib/Dancer/Serializer/JSONP.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Serializer::JSONP;
++use v5; package Dancer::Serializer::JSONP;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ $Dancer::Serializer::JSONP::VERSION = '1.3513';
+ # ABSTRACT: serializer for handling JSONP data
+diff --git a/lib/Dancer/Serializer/Mutable.pm b/lib/Dancer/Serializer/Mutable.pm
+index a113005..2b0b945 100644
+--- a/lib/Dancer/Serializer/Mutable.pm
++++ b/lib/Dancer/Serializer/Mutable.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Serializer::Mutable;
++use v5; package Dancer::Serializer::Mutable;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: Serialize and deserialize content using the appropriate HTTP header
+ $Dancer::Serializer::Mutable::VERSION = '1.3513';
+diff --git a/lib/Dancer/Serializer/XML.pm b/lib/Dancer/Serializer/XML.pm
+index 166e08c..a781755 100644
+--- a/lib/Dancer/Serializer/XML.pm
++++ b/lib/Dancer/Serializer/XML.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Serializer::XML;
++use v5; package Dancer::Serializer::XML;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: serializer for handling XML data
+ $Dancer::Serializer::XML::VERSION = '1.3513';
+diff --git a/lib/Dancer/Serializer/YAML.pm b/lib/Dancer/Serializer/YAML.pm
+index bfbb199..a025642 100644
+--- a/lib/Dancer/Serializer/YAML.pm
++++ b/lib/Dancer/Serializer/YAML.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Serializer::YAML;
++use v5; package Dancer::Serializer::YAML;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: serializer for handling YAML data
+ $Dancer::Serializer::YAML::VERSION = '1.3513';
+diff --git a/lib/Dancer/Session.pm b/lib/Dancer/Session.pm
+index 0c62bc2..4d6aec8 100644
+--- a/lib/Dancer/Session.pm
++++ b/lib/Dancer/Session.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Session;
++use v5; package Dancer::Session;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: session engine for the Dancer framework
+ $Dancer::Session::VERSION = '1.3513';
+diff --git a/lib/Dancer/Session/Abstract.pm b/lib/Dancer/Session/Abstract.pm
+index 1672f3f..d499dd4 100644
+--- a/lib/Dancer/Session/Abstract.pm
++++ b/lib/Dancer/Session/Abstract.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Session::Abstract;
++use v5; package Dancer::Session::Abstract;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: abstract class for session engine
+ $Dancer::Session::Abstract::VERSION = '1.3513';
+diff --git a/lib/Dancer/Session/Simple.pm b/lib/Dancer/Session/Simple.pm
+index 056f072..1e69d04 100644
+--- a/lib/Dancer/Session/Simple.pm
++++ b/lib/Dancer/Session/Simple.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Session::Simple;
++use v5; package Dancer::Session::Simple;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: in-memory session backend for Dancer
+ $Dancer::Session::Simple::VERSION = '1.3513';
+diff --git a/lib/Dancer/Session/YAML.pm b/lib/Dancer/Session/YAML.pm
+index 2a1441a..c3d0ec6 100644
+--- a/lib/Dancer/Session/YAML.pm
++++ b/lib/Dancer/Session/YAML.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Session::YAML;
++use v5; package Dancer::Session::YAML;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: YAML-file-based session backend for Dancer
+ $Dancer::Session::YAML::VERSION = '1.3513';
+diff --git a/lib/Dancer/SharedData.pm b/lib/Dancer/SharedData.pm
+index 1e0d88a..07ed958 100644
+--- a/lib/Dancer/SharedData.pm
++++ b/lib/Dancer/SharedData.pm
+@@ -1,4 +1,4 @@
+-package Dancer::SharedData;
++use v5; package Dancer::SharedData;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ # ABSTRACT: Shared-data singleton for Dancer
+ $Dancer::SharedData::VERSION = '1.3513';
+diff --git a/lib/Dancer/Template.pm b/lib/Dancer/Template.pm
+index b7e98ef..eae4a4e 100644
+--- a/lib/Dancer/Template.pm
++++ b/lib/Dancer/Template.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Template;
++use v5; package Dancer::Template;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: template wrapper for Dancer
+ $Dancer::Template::VERSION = '1.3513';
+diff --git a/lib/Dancer/Template/Abstract.pm b/lib/Dancer/Template/Abstract.pm
+index 77b8011..5a3aa2a 100644
+--- a/lib/Dancer/Template/Abstract.pm
++++ b/lib/Dancer/Template/Abstract.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Template::Abstract;
++use v5; package Dancer::Template::Abstract;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: abstract class for Dancer's template engines
+ $Dancer::Template::Abstract::VERSION = '1.3513';
+diff --git a/lib/Dancer/Template/Simple.pm b/lib/Dancer/Template/Simple.pm
+index 035e388..ca2b4ef 100644
+--- a/lib/Dancer/Template/Simple.pm
++++ b/lib/Dancer/Template/Simple.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Template::Simple;
++use v5; package Dancer::Template::Simple;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: pure Perl 5 template engine for Dancer
+ $Dancer::Template::Simple::VERSION = '1.3513';
+diff --git a/lib/Dancer/Template/TemplateToolkit.pm b/lib/Dancer/Template/TemplateToolkit.pm
+index ff8c487..ad6fddd 100644
+--- a/lib/Dancer/Template/TemplateToolkit.pm
++++ b/lib/Dancer/Template/TemplateToolkit.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Template::TemplateToolkit;
++use v5; package Dancer::Template::TemplateToolkit;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: Template Toolkit wrapper for Dancer
+ $Dancer::Template::TemplateToolkit::VERSION = '1.3513';
+diff --git a/lib/Dancer/Test.pm b/lib/Dancer/Test.pm
+index 9cb8d8b..f8dc932 100644
+--- a/lib/Dancer/Test.pm
++++ b/lib/Dancer/Test.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Test;
++use v5; package Dancer::Test;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: Test helpers to test a Dancer application
+ $Dancer::Test::VERSION = '1.3513';
+diff --git a/lib/Dancer/Timer.pm b/lib/Dancer/Timer.pm
+index 429b02f..7cf5e91 100644
+--- a/lib/Dancer/Timer.pm
++++ b/lib/Dancer/Timer.pm
+@@ -1,4 +1,4 @@
+-package Dancer::Timer;
++use v5; package Dancer::Timer;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ #ABSTRACT: a timer for Dancer
+ $Dancer::Timer::VERSION = '1.3513';
+diff --git a/lib/HTTP/Tiny/NoProxy.pm b/lib/HTTP/Tiny/NoProxy.pm
+index a141a4e..3e222ca 100644
+--- a/lib/HTTP/Tiny/NoProxy.pm
++++ b/lib/HTTP/Tiny/NoProxy.pm
+@@ -1,4 +1,4 @@
+-package HTTP::Tiny::NoProxy;
++use v5; package HTTP::Tiny::NoProxy;
+ our $AUTHORITY = 'cpan:SUKRIA';
+ $HTTP::Tiny::NoProxy::VERSION = '1.3513';
+ use base 'HTTP::Tiny';

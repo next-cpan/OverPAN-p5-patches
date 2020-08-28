@@ -1,0 +1,459 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Nicolas R <nicolas@atoomic.org>
+Date: Fri, 28 Aug 2020 11:42:30 -0600
+Subject: [PATCH] patch t
+
+---
+ t/00_base/002_strict_and_warnings.t               | 4 ++--
+ t/00_base/06_dancer_object.t                      | 6 +++---
+ t/00_base/13_dancer_singleton.t                   | 2 +-
+ t/00_base/lib/AppWithError.pm                     | 2 +-
+ t/00_base/lib/WorkingApp.pm                       | 2 +-
+ t/02_request/08_param_array.t                     | 2 +-
+ t/02_request/21_dancer_response_multiple_params.t | 2 +-
+ t/03_route_handler/18_auto_page.t                 | 2 +-
+ t/03_route_handler/35_no_further_routes.t         | 2 +-
+ t/08_session/12_session_name.t                    | 2 +-
+ t/10_template/03_simple.t                         | 2 +-
+ t/11_logger/unicode.t                             | 2 +-
+ t/12_response/06_filter_halt_status.t             | 2 +-
+ t/12_response/07_cookies.t                        | 2 +-
+ t/12_response/09_headers_to_array.t               | 2 +-
+ t/12_response/10_error_dumper_without_clone.t     | 2 +-
+ t/12_response/11_CVE-2012-5572.t                  | 2 +-
+ t/14_serializer/99_bugs.t                         | 2 +-
+ t/15_plugins/02_config.t                          | 6 +++---
+ t/17_apps/01_settings.t                           | 2 +-
+ t/20_deprecation/01_api.t                         | 2 +-
+ t/TestAppExt.pm                                   | 2 +-
+ t/TestPlugin.pm                                   | 2 +-
+ t/lib/EasyMocker.pm                               | 2 +-
+ t/lib/Forum.pm                                    | 2 +-
+ t/lib/Hookee.pm                                   | 2 +-
+ t/lib/LinkBlocker.pm                              | 2 +-
+ t/lib/TestApp.pm                                  | 2 +-
+ t/lib/TestAppUnicode.pm                           | 2 +-
+ t/lib/TestPlugin.pm                               | 2 +-
+ t/lib/TestPlugin2.pm                              | 2 +-
+ t/lib/TestPluginMRO.pm                            | 2 +-
+ t/lib/TestUtils.pm                                | 2 +-
+ 33 files changed, 38 insertions(+), 38 deletions(-)
+
+diff --git a/t/00_base/002_strict_and_warnings.t b/t/00_base/002_strict_and_warnings.t
+index d498383..54aef4a 100644
+--- a/t/00_base/002_strict_and_warnings.t
++++ b/t/00_base/002_strict_and_warnings.t
+@@ -1,13 +1,13 @@
+ use Test::More tests => 10, import => ['!pass'];
+ 
+ {
+-    package Webapp;
++    use v5; package Webapp;
+     use Dancer ':syntax';
+ 
+     # strict
+     eval '$foo = 5;';
+     ::ok($@, 'got an error because strict is on');
+-    ::like $@, qr/Global symbol "\$foo" requires explicit package name/,
++    ::like $@, qr/Global symbol "\$foo" requires explicit use v5; package name/,
+         'got the right error';
+ 
+     # checking warnings are on by default
+diff --git a/t/00_base/06_dancer_object.t b/t/00_base/06_dancer_object.t
+index 75daf96..366ad89 100644
+--- a/t/00_base/06_dancer_object.t
++++ b/t/00_base/06_dancer_object.t
+@@ -13,7 +13,7 @@ plan tests => 19;
+ use Dancer::Object;
+ 
+ {
+-    package Person;
++    use v5; package Person;
+     use parent 'Dancer::Object';
+     __PACKAGE__->attributes('name', 'age', 'sex');
+ }
+@@ -40,7 +40,7 @@ my $attrs = Person->get_attributes();
+ is_deeply $attrs, ['name', 'age', 'sex'], "attributes are ok";
+ 
+ {
+-    package Person::Child;
++    use v5; package Person::Child;
+     use parent -norequire => 'Person';
+     __PACKAGE__->attributes('parent');
+ }
+@@ -56,7 +56,7 @@ my $child_attrs = Person::Child->get_attributes();
+ is_deeply $child_attrs, ['parent', 'name', 'age', 'sex'], "attributes are ok";
+ 
+ {
+-    package Person::Child::Blond;
++    use v5; package Person::Child::Blond;
+     use parent -norequire => 'Person::Child';
+     __PACKAGE__->attributes('hair_length');
+ }
+diff --git a/t/00_base/13_dancer_singleton.t b/t/00_base/13_dancer_singleton.t
+index 4804a90..89f56cd 100644
+--- a/t/00_base/13_dancer_singleton.t
++++ b/t/00_base/13_dancer_singleton.t
+@@ -8,7 +8,7 @@ plan tests => 10;
+ my $test_counter = 0;
+ 
+ {
+-    package MySingleton;
++    use v5; package MySingleton;
+     use base qw(Dancer::Object::Singleton);
+ 
+     __PACKAGE__->attributes( qw/foo/ );
+diff --git a/t/00_base/lib/AppWithError.pm b/t/00_base/lib/AppWithError.pm
+index 2163862..055363a 100644
+--- a/t/00_base/lib/AppWithError.pm
++++ b/t/00_base/lib/AppWithError.pm
+@@ -1,4 +1,4 @@
+-package AppWithError;
++use v5; package AppWithError;
+ use Dancer ':syntax';
+ 
+ bogus_call_to_unkown_symbol;
+diff --git a/t/00_base/lib/WorkingApp.pm b/t/00_base/lib/WorkingApp.pm
+index fd98b75..fb7e3e7 100644
+--- a/t/00_base/lib/WorkingApp.pm
++++ b/t/00_base/lib/WorkingApp.pm
+@@ -1,4 +1,4 @@
+-package WorkingApp;
++use v5; package WorkingApp;
+ use Dancer ':syntax';
+ 
+ get '/app' => sub { "app" };
+diff --git a/t/02_request/08_param_array.t b/t/02_request/08_param_array.t
+index 922f45f..0d89dd4 100644
+--- a/t/02_request/08_param_array.t
++++ b/t/02_request/08_param_array.t
+@@ -6,7 +6,7 @@ use Test::More tests => 6;
+ use Dancer::Test;
+ 
+ {
+-    package MyApp;
++    use v5; package MyApp;
+ 
+     use Dancer ':tests';
+ 
+diff --git a/t/02_request/21_dancer_response_multiple_params.t b/t/02_request/21_dancer_response_multiple_params.t
+index 05d8070..c2ea1f2 100644
+--- a/t/02_request/21_dancer_response_multiple_params.t
++++ b/t/02_request/21_dancer_response_multiple_params.t
+@@ -6,7 +6,7 @@ use Dancer::Test;
+ 
+ 
+ {
+-    package MyApp;
++    use v5; package MyApp;
+     use Dancer ':tests';
+     set logger => 'console';
+ 
+diff --git a/t/03_route_handler/18_auto_page.t b/t/03_route_handler/18_auto_page.t
+index b4796be..9fba881 100644
+--- a/t/03_route_handler/18_auto_page.t
++++ b/t/03_route_handler/18_auto_page.t
+@@ -7,7 +7,7 @@ use Test::More import => ['!pass'], tests => 8;
+ use Dancer::Test;
+ 
+ {
+-    package Foo;
++    use v5; package Foo;
+     use Dancer;
+ 
+     hook before_template => sub {
+diff --git a/t/03_route_handler/35_no_further_routes.t b/t/03_route_handler/35_no_further_routes.t
+index 7d18321..14ccee0 100644
+--- a/t/03_route_handler/35_no_further_routes.t
++++ b/t/03_route_handler/35_no_further_routes.t
+@@ -1,4 +1,4 @@
+-package MyTest;
++use v5; package MyTest;
+ 
+ use strict;
+ use warnings;
+diff --git a/t/08_session/12_session_name.t b/t/08_session/12_session_name.t
+index be7ee8f..e84cec7 100644
+--- a/t/08_session/12_session_name.t
++++ b/t/08_session/12_session_name.t
+@@ -28,7 +28,7 @@ note "changing session name"; {
+ 
+ 
+ {
+-    package Dancer::Session::TestOverrideName;
++    use v5; package Dancer::Session::TestOverrideName;
+ 
+     use base 'Dancer::Session::Abstract';
+ 
+diff --git a/t/10_template/03_simple.t b/t/10_template/03_simple.t
+index 7903c21..543564b 100644
+--- a/t/10_template/03_simple.t
++++ b/t/10_template/03_simple.t
+@@ -7,7 +7,7 @@ use Dancer::FileUtils 'path';
+ use Dancer::Template::Simple;
+ 
+ {
+-    package Foo;
++    use v5; package Foo;
+     use base 'Dancer::Object';
+     Foo->attributes('x', 'y');
+ 
+diff --git a/t/11_logger/unicode.t b/t/11_logger/unicode.t
+index 4ee7a6b..cdaa4ef 100644
+--- a/t/11_logger/unicode.t
++++ b/t/11_logger/unicode.t
+@@ -7,7 +7,7 @@ use Test::NoWarnings;
+ my $smileys = '☺☺☺';
+ 
+ {
+-    package MyApp;
++    use v5; package MyApp;
+ 
+     use utf8;
+     use Dancer;
+diff --git a/t/12_response/06_filter_halt_status.t b/t/12_response/06_filter_halt_status.t
+index cbb98a4..48fc019 100644
+--- a/t/12_response/06_filter_halt_status.t
++++ b/t/12_response/06_filter_halt_status.t
+@@ -8,7 +8,7 @@ plan skip_all => "JSON is needed to run this tests"
+ # make sure we keep the status when halt is used
+ 
+ {
+-    package SomeApp;
++    use v5; package SomeApp;
+     use Dancer;
+ 
+     set serializer => 'JSON';
+diff --git a/t/12_response/07_cookies.t b/t/12_response/07_cookies.t
+index ab30cdf..5d77670 100644
+--- a/t/12_response/07_cookies.t
++++ b/t/12_response/07_cookies.t
+@@ -1,4 +1,4 @@
+-package main;
++use v5; package main;
+ use strict;
+ use warnings;
+ use Test::More tests => 4, import => ['!pass'];
+diff --git a/t/12_response/09_headers_to_array.t b/t/12_response/09_headers_to_array.t
+index cc745a4..cfddaad 100644
+--- a/t/12_response/09_headers_to_array.t
++++ b/t/12_response/09_headers_to_array.t
+@@ -1,4 +1,4 @@
+-package main;
++use v5; package main;
+ use strict;
+ use warnings;
+ use Test::More tests => 3, import => ['!pass'];
+diff --git a/t/12_response/10_error_dumper_without_clone.t b/t/12_response/10_error_dumper_without_clone.t
+index 601c5be..704381d 100644
+--- a/t/12_response/10_error_dumper_without_clone.t
++++ b/t/12_response/10_error_dumper_without_clone.t
+@@ -12,7 +12,7 @@ use Devel::Hide 'Clone';
+ plan tests => 3;
+ 
+ { 
+-    package MyApp;
++    use v5; package MyApp;
+ 
+     use Dancer;
+ 
+diff --git a/t/12_response/11_CVE-2012-5572.t b/t/12_response/11_CVE-2012-5572.t
+index 2b6eacb..e0033df 100644
+--- a/t/12_response/11_CVE-2012-5572.t
++++ b/t/12_response/11_CVE-2012-5572.t
+@@ -1,4 +1,4 @@
+-package main;
++use v5; package main;
+ use strict;
+ use warnings;
+ use Test::More tests => 2, import => ['!pass'];
+diff --git a/t/14_serializer/99_bugs.t b/t/14_serializer/99_bugs.t
+index 4418bdd..3099873 100644
+--- a/t/14_serializer/99_bugs.t
++++ b/t/14_serializer/99_bugs.t
+@@ -107,7 +107,7 @@ SKIP: {
+     };
+ 
+     my $res = dancer_response(GET => '/with_errors');
+-    like($res->content, qr{"error":"Can't locate object method \\"method\\" via package \\"UnknownPackage\\"});
++    like($res->content, qr{"error":"Can't locate object method \\"method\\" via use v5; package \\"UnknownPackage\\"});
+ 
+     $res = dancer_response(GET => '/without_errors');
+     like($res->content, qr{An internal error occured});
+diff --git a/t/15_plugins/02_config.t b/t/15_plugins/02_config.t
+index 99a7d40..d2d3537 100644
+--- a/t/15_plugins/02_config.t
++++ b/t/15_plugins/02_config.t
+@@ -47,7 +47,7 @@ ok( Dancer::Config->load, 'Config load works with a conffile' );
+ 
+ {
+ 
+-    package Dancer::Plugin::Test;
++    use v5; package Dancer::Plugin::Test;
+     use Dancer::Plugin;
+ 
+     sub conf {
+@@ -56,7 +56,7 @@ ok( Dancer::Config->load, 'Config load works with a conffile' );
+ }
+ {
+ 
+-    package My::Other::Plugin;
++    use v5; package My::Other::Plugin;
+     use Dancer::Plugin;
+ 
+     sub conf {
+@@ -65,7 +65,7 @@ ok( Dancer::Config->load, 'Config load works with a conffile' );
+ }
+ {
+ 
+-    package Yet::Another::Plugin;
++    use v5; package Yet::Another::Plugin;
+     use Dancer::Plugin;
+ 
+     sub conf {
+diff --git a/t/17_apps/01_settings.t b/t/17_apps/01_settings.t
+index cfd8da2..d196a93 100644
+--- a/t/17_apps/01_settings.t
++++ b/t/17_apps/01_settings.t
+@@ -22,7 +22,7 @@ is $app->setting('foo'), 42,
+ # a setting could be overwritten by a Dancer::App instance
+ 
+ { 
+-    package Webapp;
++    use v5; package Webapp;
+     use Dancer;
+ 
+     setting onlyroot => 42;
+diff --git a/t/20_deprecation/01_api.t b/t/20_deprecation/01_api.t
+index 2828b08..ee3ef35 100644
+--- a/t/20_deprecation/01_api.t
++++ b/t/20_deprecation/01_api.t
+@@ -4,7 +4,7 @@ use Test::More tests => 5;
+ 
+ {
+ 
+-    package test::dancer::deprecated;
++    use v5; package test::dancer::deprecated;
+     use base 'Dancer::Object';
+     use Dancer::Deprecation;
+ 
+diff --git a/t/TestAppExt.pm b/t/TestAppExt.pm
+index c432fe8..b74e9ec 100644
+--- a/t/TestAppExt.pm
++++ b/t/TestAppExt.pm
+@@ -1,4 +1,4 @@
+-package TestAppExt;
++use v5; package TestAppExt;
+ 
+ use strict;
+ use warnings;
+diff --git a/t/TestPlugin.pm b/t/TestPlugin.pm
+index 8e589a3..ee29b6c 100644
+--- a/t/TestPlugin.pm
++++ b/t/TestPlugin.pm
+@@ -1,4 +1,4 @@
+-package TestPlugin;
++use v5; package TestPlugin;
+ 
+ use strict;
+ use warnings;
+diff --git a/t/lib/EasyMocker.pm b/t/lib/EasyMocker.pm
+index c14d7e8..4b1c4ac 100644
+--- a/t/lib/EasyMocker.pm
++++ b/t/lib/EasyMocker.pm
+@@ -1,4 +1,4 @@
+-package EasyMocker;
++use v5; package EasyMocker;
+ # I want an easy to use mocker, with pretty explicit syntax
+ 
+ use strict;
+diff --git a/t/lib/Forum.pm b/t/lib/Forum.pm
+index 75438ca..7155cd8 100644
+--- a/t/lib/Forum.pm
++++ b/t/lib/Forum.pm
+@@ -1,4 +1,4 @@
+-package Forum;
++use v5; package Forum;
+ 
+ use Dancer ':syntax';
+ use TestPlugin;
+diff --git a/t/lib/Hookee.pm b/t/lib/Hookee.pm
+index 8b3ecd7..53e3cbd 100644
+--- a/t/lib/Hookee.pm
++++ b/t/lib/Hookee.pm
+@@ -1,4 +1,4 @@
+-package t::lib::Hookee;
++use v5; package t::lib::Hookee;
+ 
+ use Dancer::Plugin;
+ 
+diff --git a/t/lib/LinkBlocker.pm b/t/lib/LinkBlocker.pm
+index 1df1caf..3231ad7 100644
+--- a/t/lib/LinkBlocker.pm
++++ b/t/lib/LinkBlocker.pm
+@@ -1,4 +1,4 @@
+-package LinkBlocker;
++use v5; package LinkBlocker;
+ use Dancer ':syntax';
+ use Dancer::Plugin;
+ 
+diff --git a/t/lib/TestApp.pm b/t/lib/TestApp.pm
+index 394473a..3b1360b 100644
+--- a/t/lib/TestApp.pm
++++ b/t/lib/TestApp.pm
+@@ -1,4 +1,4 @@
+-package TestApp;
++use v5; package TestApp;
+ 
+ use Dancer;
+ use Data::Dumper;
+diff --git a/t/lib/TestAppUnicode.pm b/t/lib/TestAppUnicode.pm
+index 4b5477a..8d2e4f7 100644
+--- a/t/lib/TestAppUnicode.pm
++++ b/t/lib/TestAppUnicode.pm
+@@ -1,4 +1,4 @@
+-package TestAppUnicode;
++use v5; package TestAppUnicode;
+ use Dancer;
+ 
+ get '/string' => sub {
+diff --git a/t/lib/TestPlugin.pm b/t/lib/TestPlugin.pm
+index 614eb8a..66686c9 100644
+--- a/t/lib/TestPlugin.pm
++++ b/t/lib/TestPlugin.pm
+@@ -1,4 +1,4 @@
+-package TestPlugin;
++use v5; package TestPlugin;
+ 
+ use strict;
+ use warnings;
+diff --git a/t/lib/TestPlugin2.pm b/t/lib/TestPlugin2.pm
+index afad70b..c9bb926 100644
+--- a/t/lib/TestPlugin2.pm
++++ b/t/lib/TestPlugin2.pm
+@@ -1,4 +1,4 @@
+-package TestPlugin2;
++use v5; package TestPlugin2;
+ 
+ use strict;
+ use warnings;
+diff --git a/t/lib/TestPluginMRO.pm b/t/lib/TestPluginMRO.pm
+index 833cabf..abcbc52 100644
+--- a/t/lib/TestPluginMRO.pm
++++ b/t/lib/TestPluginMRO.pm
+@@ -1,4 +1,4 @@
+-package TestPluginMRO;
++use v5; package TestPluginMRO;
+ 
+ use strict;
+ use warnings;
+diff --git a/t/lib/TestUtils.pm b/t/lib/TestUtils.pm
+index e5727bf..973b6d6 100644
+--- a/t/lib/TestUtils.pm
++++ b/t/lib/TestUtils.pm
+@@ -1,4 +1,4 @@
+-package TestUtils;
++use v5; package TestUtils;
+ 
+ use base 'Exporter';
+ use vars '@EXPORT';
